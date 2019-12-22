@@ -7,7 +7,7 @@ def postprocess(wv, n_components):
     pca = PCA(n_components=n_components)
     mean = np.average(wv, axis=0)
     pca.fit(wv - mean)
-    components = np.matmil(np.matmul(wv, pca.components_.T), pca.components_)
+    components = np.matmul(np.matmul(wv, pca.components_.T), pca.components_)
     processed = wv - mean - components
 
     return processed
