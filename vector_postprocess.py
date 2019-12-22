@@ -17,3 +17,4 @@ if __name__ == '__main__':
     wv = np.load(wv_path)
     n_components = 1
     processed_wv = postprocess(wv, n_components)
+    np.save('post_processed_wv.npy', processed_wv)
