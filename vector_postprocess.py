@@ -3,7 +3,7 @@ from sklearn.decomposition import PCA
 import sys
 
 
-def postprocess(wv, n_compontns):
+def postprocess(wv, n_components):
     pca = PCA(n_components=n_components)
     mean = np.average(wv, axis=0)
     pca.fit(wv - mean)
