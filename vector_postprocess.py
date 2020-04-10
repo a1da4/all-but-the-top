@@ -1,20 +1,33 @@
+import argparse
 import numpy as np
 from sklearn.decomposition import PCA
-import sys
 
 
-def postprocess(wv, n_components):
-    pca = PCA(n_components=n_components)
+def main(args):
+    """ vector postprocess
+
+    :param wv: word vector 
+    :param n_components: number of dimensions postprocessing
+    
+    :return: postprocessed vector
+    """
+    wv = np.load(args.model_path)
+    pca = PCA(n_components=args.n_components)
     mean = np.average(wv, axis=0)
     pca.fit(wv - mean)
     components = np.matmul(np.matmul(wv, pca.components_.T), pca.components_)
     processed = wv - mean - components
+    np.save(f'WV_abtt-{args.n_components}', processed)
 
-    return processed
+
+def cli_main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_path', help='path of model')
+    parser.add_argument('--n_components', type=int, default=5, help='number of dimensions postprocessing')
+
+    args = parser.parse_args()
+    main(args)
+
 
 if __name__ == '__main__':
-    wv_path = sys.argv[1]
-    wv = np.load(wv_path)
-    n_components = 1
-    processed_wv = postprocess(wv, n_components)
-    np.save('post_processed_wv.npy', processed_wv)
+    cli_main()
